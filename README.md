@@ -1,2 +1,2 @@
 # trading-algorithm
-Trading  algorithmic technical assignment for developer 1
+Trading  algorithmic technical assignment for developer
