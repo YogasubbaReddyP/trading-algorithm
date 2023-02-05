@@ -1,4 +1,4 @@
-package com.yoga.assignment.orderbook;
+package com.yoga.assignment.orderbook.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
