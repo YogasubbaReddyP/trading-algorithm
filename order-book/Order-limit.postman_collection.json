@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "ab4822a5-6ada-4732-bb11-4cf90fbff07a",
+		"name": "Order-limit",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2811852"
+	},
+	"item": [
+		{
+			"name": "addOrder",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"price\": \"90\",\r\n   \"quantity\": \"400\",\r\n   \"side\": \"SELL\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9390/addOrder",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9390",
+					"path": [
+						"addOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteOrderById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:9390/deleteOrderById/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9390",
+					"path": [
+						"deleteOrderById",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modifyOrderById/5",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"price\": \"81\",\r\n   \"quantity\": \"400\",\r\n   \"side\": \"SELL\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9390/modifyOrderById/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9390",
+					"path": [
+						"modifyOrderById",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOrderById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9390/getOrderById/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9390",
+					"path": [
+						"getOrderById",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllOrder",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9390/getAllOrder",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9390",
+					"path": [
+						"getAllOrder"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
