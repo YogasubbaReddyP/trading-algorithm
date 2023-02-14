@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.yoga.assignment.orderbook.api.dto.OrderRequestDto;
+import com.yoga.assignment.orderbook.api.enums.OrderStatus;
 import com.yoga.assignment.orderbook.api.exception.OrderException;
 import com.yoga.assignment.orderbook.api.model.Order;
+import com.yoga.assignment.orderbook.api.publisher.OrderEventPublisher;
 import com.yoga.assignment.orderbook.api.repo.OrderRepo;
 import com.yoga.assignment.orderbook.api.service.OrderService;
 
@@ -21,12 +23,19 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderRepo orderRepo;
 
+	@Autowired
+	private OrderEventPublisher publisher;
+
 	@Override
 	public ResponseEntity<Order> addOrder(OrderRequestDto orderRequestDto) {
 		try {
 			Order order = Order.build((long) 0, orderRequestDto.getPrice(), orderRequestDto.getQuantity(),
-					orderRequestDto.getSide(), new Date());
-			return new ResponseEntity<>(orderRepo.save(order), HttpStatus.CREATED);
+					orderRequestDto.getSide(), new Date(), null, null, null);
+
+			ResponseEntity<Order> response = new ResponseEntity<>(orderRepo.save(order), HttpStatus.CREATED);
+
+			publisher.publishOrderEvent(response.getBody());
+			return response;
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -47,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
 
 		Optional<Order> existingOrder = orderRepo.findById(id);
 
-		if (existingOrder.isPresent()) {
+		if (existingOrder.isPresent() && OrderStatus.MATCHED != existingOrder.get().getStatus()) {
 			Order latestOrder = existingOrder.get();
 			if (latestOrder.getPrice() != null && latestOrder.getPrice() != modifiedOrder.getPrice()) {
 				latestOrder.setPrice(modifiedOrder.getPrice());
@@ -59,7 +68,12 @@ public class OrderServiceImpl implements OrderService {
 				latestOrder.setSide(modifiedOrder.getSide());
 			}
 
-			return new ResponseEntity<>(orderRepo.save(latestOrder), HttpStatus.OK);
+			latestOrder.setLastUpdated(new Date());
+
+			ResponseEntity<Order> response = new ResponseEntity<>(orderRepo.save(latestOrder), HttpStatus.OK);
+			publisher.publishOrderEvent(response.getBody());
+
+			return response;
 		} else {
 			throw new OrderException("No orders found with Id to modify: " + id);
 		}

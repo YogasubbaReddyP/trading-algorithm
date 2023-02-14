@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.yoga.assignment.orderbook.api.enums.OrderSide;
+import com.yoga.assignment.orderbook.api.enums.OrderStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,9 +39,16 @@ public class Order {
 	private Long quantity;
 	
 	@Enumerated(EnumType.STRING)
-	private OrderSide side;
+	private OrderSide side;	
 	
 	@Column(columnDefinition = "TIMESTAMP")
-	private Date lastUpdated = new Date();
+	private Date lastUpdated;
+	
+	@Enumerated(EnumType.STRING)
+	private OrderStatus status;
+	
+	private Long matchedQuantity;
+	
+	private Long remainingQuantity;
 
 }
